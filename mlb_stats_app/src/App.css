@@ -1,0 +1,12 @@
+.main-content {
+  max-width: 800px;
+  margin: 50px auto;
+}
+
+.horizontal-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+

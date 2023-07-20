@@ -1,7 +1,11 @@
 import requests
 import json
+from datetime import date
 
-url = "https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=2023-03-30&endDate=2023-07-17"
+today_date = date.today()
+end_date = str(today_date.year) + '-' + str(today_date.month) + '-' + str(today_date.day - 1)
+print("Data until", end_date)
+url = "https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=2023-03-30&endDate=" + end_date
 r = requests.get(url)
 
 if r.status_code == 200:

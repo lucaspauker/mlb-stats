@@ -1,6 +1,6 @@
 import json
 
-# First get all MLB teams
+# First get all MLB teams and records
 with open("data/cleaned_season_data.json", "r") as file:
     data = json.load(file)
 
@@ -8,6 +8,21 @@ teams = []
 for game in data:
     teams.append(game['home_team'])
 teams = list(set(teams))
+
+
+# Get number of wins and losses per team
+wins_losses = {}
+for game in data:
+    winner = game['winning_team']
+    loser = game['losing_team']
+    if winner in wins_losses:
+        wins_losses[winner]['wins'] += 1
+    else:
+        wins_losses[winner] = {'wins': 1, 'losses': 0}
+    if loser in wins_losses:
+        wins_losses[loser]['losses'] += 1
+    else:
+        wins_losses[loser] = {'wins': 0, 'losses': 1}
 
 
 # Set ELO of each team
@@ -48,9 +63,21 @@ for game in data:
     update_elo(winner, loser)
 
 
-# Print the ELO ratings of each team
+# Sort teams by ELO
 sorted_ratings = sorted(elo_ratings.items(), key=lambda x: x[1], reverse=True)
-for team, elo in sorted_ratings:
-    print(f'{team}: {round(elo, 2)}')
 
+
+team_data = {}
+for elem in sorted_ratings:
+    team_data[elem[0]] = {'name': elem[0],
+         'wins': wins_losses[elem[0]]['wins'],
+         'losses': wins_losses[elem[0]]['losses'],
+         'elo': round(elem[1]),
+        }
+
+for team, elo in sorted_ratings:
+    print(f'{team}: {round(elo)}')
+
+with open("data/team_data.json", "w") as file:
+    json.dump(team_data, file)
 
