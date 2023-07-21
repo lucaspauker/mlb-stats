@@ -37,7 +37,8 @@ def calculate_expected(elo_a, elo_b):
 
 # Function to update the Elo ratings
 def update_elo(winner, loser):
-    K = 32  # Elo rating update constant
+    K = 4  # Elo rating update constant
+    # https://www.baseballprospectus.com/news/article/5247/lies-damned-lies-we-are-elo/
 
     # Calculate expected probabilities
     expected_winner = calculate_expected(elo_ratings[winner], elo_ratings[loser])
@@ -69,10 +70,15 @@ sorted_ratings = sorted(elo_ratings.items(), key=lambda x: x[1], reverse=True)
 
 team_data = {}
 for elem in sorted_ratings:
+    games_left = 162 - (wins_losses[elem[0]]['wins'] + wins_losses[elem[0]]['losses'])
+    projected_wins = int(games_left * calculate_expected(elem[1], 1500)) + wins_losses[elem[0]]['wins']
+    projected_losses = 162 - projected_wins
     team_data[elem[0]] = {'name': elem[0],
          'wins': wins_losses[elem[0]]['wins'],
          'losses': wins_losses[elem[0]]['losses'],
          'elo': round(elem[1]),
+         'projected_wins': projected_wins,
+         'projected_losses': projected_losses,
         }
 
 for team, elo in sorted_ratings:

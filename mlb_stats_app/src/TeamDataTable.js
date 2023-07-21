@@ -8,7 +8,7 @@ const TeamDataTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/team_data.json'); // Relative URL to the JSON file
+        const response = await fetch('/team_data.json');
         const data = await response.json();
         setTeamData(data);
       } catch (error) {
@@ -38,6 +38,8 @@ const TeamDataTable = () => {
       const winPercentageA = calculateWinPercentage(teamData[a].wins, teamData[a].losses);
       const winPercentageB = calculateWinPercentage(teamData[b].wins, teamData[b].losses);
       return sortConfig.direction === 'asc' ? winPercentageA - winPercentageB : winPercentageB - winPercentageA;
+    } else if (sortConfig.key === 'projWinLoss') {
+      return sortConfig.direction === 'asc' ? teamData[a].projected_wins - teamData[b].projected_wins : teamData[b].projected_wins - teamData[a].projected_wins;
     } else {
       return sortConfig.direction === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
 
@@ -45,11 +47,11 @@ const TeamDataTable = () => {
   });
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} variant='outlined'>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="center">
+            <TableCell>
               <TableSortLabel
                 active={sortConfig.key === 'teamName'}
                 direction={sortConfig.key === 'teamName' ? sortConfig.direction : 'desc'}
@@ -60,7 +62,7 @@ const TeamDataTable = () => {
                 </Typography>
               </TableSortLabel>
             </TableCell>
-            <TableCell align="center" style={{ maxWidth: 100 }}>
+            <TableCell>
               <TableSortLabel
                 active={sortConfig.key === 'winPercentage'}
                 direction={sortConfig.key === 'winPercentage' ? sortConfig.direction : 'desc'}
@@ -71,7 +73,18 @@ const TeamDataTable = () => {
                 </Typography>
               </TableSortLabel>
             </TableCell>
-            <TableCell align="center" style={{ maxWidth: 100 }}>
+            <TableCell>
+              <TableSortLabel
+                active={sortConfig.key === 'projWinLoss'}
+                direction={sortConfig.key === 'projWinLoss' ? sortConfig.direction : 'desc'}
+                onClick={() => sortTable('projWinLoss')}
+              >
+                <Typography variant="subtitle1" component="div" fontWeight="bold">
+                  Projected Record
+                </Typography>
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
               <TableSortLabel
                 active={sortConfig.key === 'elo'}
                 direction={sortConfig.key === 'elo' ? sortConfig.direction : 'desc'}
@@ -86,26 +99,32 @@ const TeamDataTable = () => {
         </TableHead>
         <TableBody>
           {sortedTeams.map((teamName) => {
-            const { wins, losses, elo } = teamData[teamName];
+            const { wins, losses, elo, projected_wins, projected_losses } = teamData[teamName];
+            const projWinsLoss = `${projected_wins}-${projected_losses}`;
             const teamInfo = `${teamName} (${wins}-${losses})`;
             const winPercentage = calculateWinPercentage(wins, losses);
             const logoFileName = `${teamName}.png`;
             const logoSrc = `/team_logos/${logoFileName}`;
             return (
               <TableRow key={teamName}>
-                <TableCell align="center">
-                  <img src={logoSrc} alt={`${teamName} Logo`} style={{ height: '30px', marginRight: '10px' }} />
-                  <Typography variant="body1" component="div">
+                <TableCell>
+                  <Typography variant="body1" component="div" className="horizontal-box">
+                    <img src={logoSrc} alt={`${teamName} Logo`} style={{ height: '30px', marginRight: '10px' }} />
                     {teamInfo}
                   </Typography>
                 </TableCell>
-                <TableCell align="center" style={{ maxWidth: 100 }}>
-                  <Typography variant="body1" component="div">
+                <TableCell>
+                  <Typography variant="body1">
                     {winPercentage}%
                   </Typography>
                 </TableCell>
-                <TableCell align="center" style={{ maxWidth: 100 }}>
-                  <Typography variant="body1" component="div">
+                <TableCell>
+                  <Typography variant="body1">
+                    {projWinsLoss}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body1">
                     {elo}
                   </Typography>
                 </TableCell>

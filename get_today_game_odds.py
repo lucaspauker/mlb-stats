@@ -16,7 +16,7 @@ with open("data/team_data.json", "r") as file:
 
 def elo_probability(rating_a, rating_b):
     probability_a = 1 / (1 + math.pow(10, (rating_b - rating_a) / 400))
-    return round(probability_a * 100, 2)
+    return round(probability_a * 100, 1)
 
 today_data = []
 for game in games:
@@ -34,5 +34,10 @@ for game in games:
             'home_team': home_team,
             'away_team': away_team,
             'prob_home': prob,
+            'prob_away': round(100 - prob, 1),
+            'game_time': game['gameDate'],
         }
     )
+
+with open("data/today_data.json", "w") as file:
+    json.dump(today_data, file)

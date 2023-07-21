@@ -1,16 +1,20 @@
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  max-width: 1200px;
+  justify-content: space-between;
+  max-width: 800px;
   margin: 0 auto;
   height: 96px;
   width: 100%;
-  font-size: 64px;
+  font-size: 48px;
 }
 
 .header-logo {
   margin-right: 16px;
   margin-bottom: 4px;
+}
+
+a {
+  color: white;
 }
 
