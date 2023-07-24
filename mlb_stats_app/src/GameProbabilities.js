@@ -49,7 +49,9 @@ const GameProbabilities = () => {
         :
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
           {gameData.map((game, index) => {
-            const { home_team, away_team, prob_home, prob_away, game_time } = game;
+            const { home_team, away_team, prob_home, prob_away, game_time,
+              home_pitcher, away_pitcher, home_pitcher_stats, away_pitcher_stats,
+              odds_home, odds_away } = game;
             const gameTime = new Date(game_time);
             const gameTimeString = convertToHoursMinutesAMPM(gameTime);
             let hasGamePassed = false;
@@ -77,36 +79,59 @@ const GameProbabilities = () => {
                 <div className='small-space'/>
                 <div className='horizontal-box game-teams-box'>
                   <div className='vertical-box' style={{width:'40%'}}>
-                    <img src={homeTeamLogo} alt={`${home_team} Logo`} style={{ height: '64px', marginRight: '10px' }} />
+                    <img src={awayTeamLogo} alt={`${away_team} Logo`} style={{ height: '64px', marginRight: '10px' }} />
                     <Typography variant="body1">
-                      {home_team}
+                      {away_team}
                     </Typography>
-                    <Typography variant="body1">
-                      {homeTeamInfo}
+                    <Typography variant="caption">
+                      {awayTeamInfo}
                     </Typography>
                   </div>
                   <Typography variant="body1">
                     @
                   </Typography>
                   <div className='vertical-box' style={{width:'40%'}}>
-                    <img src={awayTeamLogo} alt={`${away_team} Logo`} style={{ height: '64px', marginRight: '10px' }} />
+                    <img src={homeTeamLogo} alt={`${home_team} Logo`} style={{ height: '64px', marginRight: '10px' }} />
                     <Typography variant="body1">
-                      {away_team}
+                      {home_team}
                     </Typography>
-                    <Typography variant="body1">
-                      {awayTeamInfo}
+                    <Typography variant="caption">
+                      {homeTeamInfo}
                     </Typography>
                   </div>
                 </div>
                 <div className='medium-space'/>
+                <div className='horizontal-box game-teams-box'>
+                  <div className='vertical-box' style={{width:'40%'}}>
+                    <Typography variant="body1">
+                      {away_pitcher}
+                    </Typography>
+                    {away_pitcher !== "TBD" && <Typography variant="caption">
+                      ({away_pitcher_stats['record']}), {away_pitcher_stats['era']} ERA
+                    </Typography>}
+                  </div>
+                  <div className='vertical-box' style={{width:'40%'}}>
+                    <Typography variant="body1">
+                      {home_pitcher}
+                    </Typography>
+                    {home_pitcher !== "TBD" && <Typography variant="caption">
+                      ({home_pitcher_stats['record']}), {home_pitcher_stats['era']} ERA
+                    </Typography>}
+                  </div>
+                </div>
+                <div className='medium-space'/>
                 {prob_home > prob_away ?
-                  <Typography variant="body1">
-                    <b>{prob_home}%</b> chance the <b>{home_team}</b> win
-                  </Typography>
+                  <>
+                    <Typography variant="body1">
+                      <b>{prob_home}%</b> chance the <b>{home_team}</b> win (<b>{odds_home}</b>)
+                    </Typography>
+                  </>
                   :
-                  <Typography variant="body1">
-                    <b>{prob_away}%</b> chance the <b>{away_team}</b> win
-                  </Typography>
+                  <>
+                    <Typography variant="body1">
+                      <b>{prob_away}%</b> chance the <b>{away_team}</b> win (<b>{odds_away}</b>)
+                    </Typography>
+                  </>
                 }
               </Paper>
             );

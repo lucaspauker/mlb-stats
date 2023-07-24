@@ -109,7 +109,7 @@ const TeamDataTable = () => {
               <TableRow key={teamName}>
                 <TableCell>
                   <Typography variant="body1" component="div" className="horizontal-box">
-                    <img src={logoSrc} alt={`${teamName} Logo`} style={{ height: '30px', marginRight: '10px' }} />
+                    <span style={{width:'50px', marginTop: 4}}><img src={logoSrc} alt={`${teamName} Logo`} style={{ height: '30px', marginRight: '10px' }} /></span>
                     {teamInfo}
                   </Typography>
                 </TableCell>

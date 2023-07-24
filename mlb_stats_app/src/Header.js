@@ -12,7 +12,7 @@ const Header = () => {
         <div className='horizontal-box'>
           <FaBaseballBall className="header-logo" fontSize='inherit'/>
           <Typography variant="h1">
-            <span className="header-title">StatBoard</span>
+            <span className="header-title">SportInsight</span>
           </Typography>
         </div>
         <div className='horizontal-box'>
