@@ -1,12 +1,21 @@
 import requests
 import json
 import math
+import pickle
+import datetime
 import statsapi
+import numpy as np
 
-games = statsapi.get("schedule", {"sportId": 1, "hydrate": "probablePitcher(note)"})['dates'][0]['games']
-
+with open("data/model_data/scaler_model.p", 'rb') as file:
+    scaler = pickle.load(file)
+with open("data/model_data/main_model.p", 'rb') as file:
+    clf = pickle.load(file)
 with open("data/team_data.json", "r") as file:
     team_data= json.load(file)
+
+current_date = datetime.datetime.now()
+formatted_date = current_date.strftime("%Y-%m-%d")
+games = statsapi.get("schedule", {"date": formatted_date, "sportId": 1, "hydrate": "probablePitcher(note)"})['dates'][0]['games']
 
 def get_am_odds(p):
     if p > 0.5:  # Negative odds
@@ -20,6 +29,15 @@ def elo_probability(rating_a, rating_b):
     probability_a = 1 / (1 + math.pow(10, (rating_b - rating_a) / 400))
     return round(probability_a * 100, 1)
 
+def get_probability(rating_home, rating_away, home_pitcher_stats, away_pitcher_stats):
+    home_win, away_win, home_whip, away_whip = 0, 0, 0, 0
+    if 'win_percentage' in home_pitcher_stats: home_win = home_pitcher_stats['win_percentage']
+    if 'whip' in home_pitcher_stats: home_whip = home_pitcher_stats['whip']
+    if 'win_percentage' in away_pitcher_stats: away_win = away_pitcher_stats['win_percentage']
+    if 'whip' in away_pitcher_stats: away_whip = away_pitcher_stats['whip']
+    pt = np.array([rating_home, rating_away, home_win, home_whip, away_win, away_whip]).reshape(1,-1);
+    return clf.predict_proba(scaler.transform(pt))[0][1] * 100;
+
 today_data = []
 for game in games:
     home_team = game['teams']['home']['team']['name']
@@ -28,28 +46,29 @@ for game in games:
     print('vs.')
     print(away_team)
 
-    # https://fivethirtyeight.com/methodology/how-our-mlb-predictions-work/
-    prob = elo_probability(team_data[home_team]['elo'] + 24, team_data[away_team]['elo'])
-    print("Probability " + home_team + " wins: " + str(prob))
-    print("American odds:", get_am_odds(prob / 100))
-    print()
 
     home_pitcher, away_pitcher = "TBD", "TBD"
     home_pitcher_stats, away_pitcher_stats = {}, {}
     if 'probablePitcher' in game['teams']['home']:
         home_pitcher = game['teams']['home']['probablePitcher']['fullName']
         tmp = statsapi.player_stat_data(game['teams']['home']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
-        home_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era']}
+        home_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': float(tmp['winPercentage']), 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': float(tmp['whip'])}
     if 'probablePitcher' in game['teams']['away']:
         away_pitcher = game['teams']['away']['probablePitcher']['fullName']
         tmp = statsapi.player_stat_data(game['teams']['away']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
-        away_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era']}
+        away_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': float(tmp['winPercentage']), 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': float(tmp['whip'])}
+
+    prob = get_probability(team_data[home_team]['elo'], team_data[away_team]['elo'], home_pitcher_stats, away_pitcher_stats)
+
+    print("Probability " + home_team + " wins: " + str(round(prob, 1)))
+    print("American odds:", get_am_odds(prob / 100))
+    print()
 
     today_data.append(
         {
             'home_team': home_team,
             'away_team': away_team,
-            'prob_home': prob,
+            'prob_home': round(prob, 1),
             'prob_away': round(100 - prob, 1),
             'game_time': game['gameDate'],
             'home_pitcher': home_pitcher,

@@ -78,18 +78,18 @@ def get_pitcher_stats(pitcher_id, end_date, year):
             stats = ret['stats'][0]['splits'][0]['stat']
 
             era = stats['era']
-            if era == '-.--': era = 0
+            if era == '-.--': return None
             else: era = float(era)
 
             wins = stats['wins']
             losses = stats['losses']
 
             win_percentage = stats['winPercentage']
-            if win_percentage == '.---': win_percentage = 0
+            if win_percentage == '.---': return None
             else: win_percentage = float(win_percentage)
 
             whip = stats['whip']
-            if whip == '-.--': whip = 0
+            if whip == '-.--': return None
             else: whip = float(whip)
 
             extracted_entry = {
@@ -115,8 +115,6 @@ teams = []
 for game in current_season_data:
     teams.append(game['home_team'])
 teams = list(set(teams))
-
-# statsapi.get("people", {"personIds": 657006, "hydrate": "stats(group=[pitching],type=[byDateRange],startDate=01/01/2023,endDate=05/05/2023,season=2023)"})['people'][0]
 
 X, y = [], []
 
@@ -145,9 +143,9 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
         if loser not in elo_ratings:
             elo_ratings[loser] = initial_elo
 
-        update_elo(winner, loser, elo_ratings)
         if c < warmup:
             # Update Elo ratings based on the game result
+            update_elo(winner, loser, elo_ratings)
             continue
 
         if game['home_pitcher_name'] == "TBD" or game['away_pitcher_name'] == "TBD": continue
@@ -162,6 +160,7 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
         X.append([elo_ratings[game['home_team']], elo_ratings[game['away_team']]] + list(home_pitcher_stats.values()) + list(away_pitcher_stats.values()))
         y.append(game['home_team'] == winner)
 
+        update_elo(winner, loser, elo_ratings)
 
     # Bring ELOs closer to mean after season ends
     for team in teams:
