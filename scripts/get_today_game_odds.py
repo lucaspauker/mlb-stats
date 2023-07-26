@@ -31,11 +31,11 @@ def elo_probability(rating_a, rating_b):
 
 def get_probability(rating_home, rating_away, home_pitcher_stats, away_pitcher_stats):
     home_win, away_win, home_whip, away_whip = 0, 0, 0, 0
-    if 'win_percentage' in home_pitcher_stats: home_win = home_pitcher_stats['win_percentage']
-    if 'whip' in home_pitcher_stats: home_whip = home_pitcher_stats['whip']
-    if 'win_percentage' in away_pitcher_stats: away_win = away_pitcher_stats['win_percentage']
-    if 'whip' in away_pitcher_stats: away_whip = away_pitcher_stats['whip']
-    pt = np.array([rating_home, rating_away, home_win, home_whip, away_win, away_whip]).reshape(1,-1);
+    if 'win_percentage' in home_pitcher_stats and home_pitcher_stats['win_percentage'] != ".---": home_win = float(home_pitcher_stats['win_percentage'])
+    if 'whip' in home_pitcher_stats and home_pitcher_stats['whip'] != "-.--": home_whip = float(home_pitcher_stats['whip'])
+    if 'win_percentage' in away_pitcher_stats and away_pitcher_stats['win_percentage'] != ".---": away_win = float(away_pitcher_stats['win_percentage'])
+    if 'whip' in away_pitcher_stats and away_pitcher_stats['whip'] != "-.--": away_whip = float(away_pitcher_stats['whip'])
+    pt = np.array([rating_home, rating_away, home_win, home_whip, away_win, away_whip]).reshape(1,-1)
     return clf.predict_proba(scaler.transform(pt))[0][1] * 100;
 
 today_data = []
@@ -56,7 +56,7 @@ for game in games:
     if 'probablePitcher' in game['teams']['away']:
         away_pitcher = game['teams']['away']['probablePitcher']['fullName']
         tmp = statsapi.player_stat_data(game['teams']['away']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
-        away_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': float(tmp['winPercentage']), 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': float(tmp['whip'])}
+        away_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': tmp['winPercentage'], 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': tmp['whip']}
 
     prob = get_probability(team_data[home_team]['elo'], team_data[away_team]['elo'], home_pitcher_stats, away_pitcher_stats)
 

@@ -2,6 +2,7 @@
 
 import json
 import glob
+from datetime import datetime
 
 # -------------- FUNCTIONS -------------
 
@@ -77,6 +78,11 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
 
     print("Finished calculating ELOs for", x, "data")
 
+# Keep track of ELO over time for each team
+team_elos = {}
+for team in teams: team_elos[team] = []
+start_timestamp = datetime.strptime(current_season_data[0]["official_date"], "%Y-%m-%d").timestamp()
+
 # Go through all games in current season
 for game in current_season_data:
     winner = game['winning_team']
@@ -90,6 +96,14 @@ for game in current_season_data:
 
     # Update Elo ratings based on the game result
     update_elo(winner, loser, elo_ratings)
+
+    date_object = datetime.strptime(game["official_date"], "%Y-%m-%d")
+    timestamp = round((date_object.timestamp() - start_timestamp) / (24*60*60))
+
+    if winner in teams:
+        team_elos[winner].append({"date": game["official_date"], "timestamp": timestamp, "elo": round(elo_ratings[winner])})
+    if loser in teams:
+        team_elos[loser].append({"date": game["official_date"], "timestamp": timestamp, "elo": round(elo_ratings[loser])})
 
 # Sort teams by ELO
 sorted_ratings = sorted(elo_ratings.items(), key=lambda x: x[1], reverse=True)
@@ -114,4 +128,6 @@ for team, elo in sorted_ratings:
 
 with open("data/team_data.json", "w") as file:
     json.dump(team_data, file)
+with open("data/team_over_time.json", "w") as file:
+    json.dump(team_elos, file)
 

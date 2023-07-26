@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TableSortLabel } from '@mui/material';
+import { Link } from "react-router-dom";
 
 const TeamDataTable = () => {
   const [teamData, setTeamData] = useState({});
@@ -110,7 +111,9 @@ const TeamDataTable = () => {
                 <TableCell>
                   <Typography variant="body1" component="div" className="horizontal-box">
                     <span style={{width:'50px', marginTop: 4}}><img src={logoSrc} alt={`${teamName} Logo`} style={{ height: '30px', marginRight: '10px' }} /></span>
-                    {teamInfo}
+                    <Link to={"/teams/" + teamName}>
+                      {teamInfo}
+                    </Link>
                   </Typography>
                 </TableCell>
                 <TableCell>
