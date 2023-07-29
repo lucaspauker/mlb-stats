@@ -21,10 +21,10 @@ const Header = () => {
           <Link to="/about" className='vertical-box'>
             <InfoIcon sx={{marginRight: 2}} />
           </Link>
-          <a target="blank" href="https://github.com/lucaspauker/mlb-stats" className='vertical-box'>
+          <a target="_blank" href="https://github.com/lucaspauker/sports-genie" className='vertical-box'>
             <GitHubIcon sx={{marginRight: 2}} />
           </a>
-          <a target="blank" href="https://twitter.com/lucas_pauker" className='vertical-box'>
+          <a target="_blank" href="https://twitter.com/lucas_pauker" className='vertical-box'>
             <TwitterIcon />
           </a>
         </div>

@@ -67,7 +67,7 @@ const About = () => {
       </div>
       <Typography>
         For more information on how the modeling works, check out our&nbsp;
-        <a style={{color: 'blue'}} target="_blank" href="https://projects.fivethirtyeight.com/checking-our-work/">Github repo</a>,
+        <a style={{color: 'blue'}} target="_blank" href="https://github.com/lucaspauker/sports-genie">Github repo</a>,
         for all the code used to generate these graphs and the predictions!
       </Typography>
     </div>
