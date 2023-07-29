@@ -16,6 +16,20 @@ const theme = createTheme({
       fontFamily: 'Merriweather Sans',
       letterSpacing: 1,
     },
+    h2: {
+      fontWeight: 'bold',
+      fontSize: 32,
+      fontFamily: 'Merriweather Sans',
+      letterSpacing: 1,
+    },
+    h3: {
+      fontSize: 24,
+      fontFamily: 'Merriweather Sans',
+      letterSpacing: 1,
+      marginTop: 64,
+      marginBottom: 16,
+      textDecoration: 'underline',
+    },
   },
 });
 

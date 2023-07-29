@@ -48,7 +48,7 @@ const TeamPage = () => {
           <div className="medium-space" />
           <Typography variant="h1">{team} ELO this season</Typography>
           <div className="small-space" />
-          <GraphWithTooltips data={teamData} />
+          <GraphWithTooltips data={teamData} teamName={team} />
         </div>
       }
     </div>

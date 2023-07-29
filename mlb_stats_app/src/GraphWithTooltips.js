@@ -2,6 +2,8 @@ import React from 'react';
 import { Line, Scatter } from 'react-chartjs-2';
 import 'chart.js/auto';
 
+import {mlbTeamColors} from "./utils";
+
 const plugins = [
   {
     afterDraw: chart => {
@@ -50,7 +52,7 @@ function addDaysToDate(dateString, days, full=false) {
   return formattedDate;
 }
 
-const GraphWithTooltips = ({ data }) => {
+const GraphWithTooltips = ({ data, teamName }) => {
   // Extracting dates and elo values from the data
   const dates = data.map(item => item.date);
   const timestamps = data.map(item => item.timestamp);
@@ -120,18 +122,14 @@ const GraphWithTooltips = ({ data }) => {
         label: 'ELO',
         data: eloValues,
         showLine: true,
-        borderColor: 'rgba(0, 0, 255, 1)',
-        backgroundColor: 'rgba(0, 0, 255, 0.2)',
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+        borderColor: mlbTeamColors[teamName]["dark"],
+        pointRadius: 3,
+        pointHoverRadius: 3,
+        pointBackgroundColor: mlbTeamColors[teamName]["light"],
       },
       {
         label: 'League Average',
         data: leagueAverageData,
-        borderColor: 'rgba(255, 0, 0, 1)', // Red color for the line
-        borderWidth: 1,
-        borderDash: [5, 5], // Dashed line style
         fill: false,
         pointRadius: 0,
       },

@@ -14,8 +14,9 @@ def calculate_expected(elo_a, elo_b):
     return 1 / (1 + 10 ** ((elo_b - elo_a) / 400))
 
 
-def update_elo(winner, loser, elo_ratings):
+def update_elo(winner, loser, elo_ratings, margin_of_victory):
     K = 4  # Elo rating update constant
+    K *= (margin_of_victory ** (1/3))
     # https://www.baseballprospectus.com/news/article/5247/lies-damned-lies-we-are-elo/
 
     # Calculate expected probabilities
@@ -136,6 +137,7 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
 
         winner = game['winning_team']
         loser = game['losing_team']
+        margin_of_victory = abs(game['home_score'] - game['away_score'])
 
         # Initialize Elo ratings for each team if not already present
         if winner not in elo_ratings:
@@ -145,7 +147,7 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
 
         if c < warmup:
             # Update Elo ratings based on the game result
-            update_elo(winner, loser, elo_ratings)
+            update_elo(winner, loser, elo_ratings, margin_of_victory)
             continue
 
         if game['home_pitcher_name'] == "TBD" or game['away_pitcher_name'] == "TBD": continue
@@ -160,7 +162,7 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
         X.append([elo_ratings[game['home_team']], elo_ratings[game['away_team']]] + list(home_pitcher_stats.values()) + list(away_pitcher_stats.values()))
         y.append(game['home_team'] == winner)
 
-        update_elo(winner, loser, elo_ratings)
+        update_elo(winner, loser, elo_ratings, margin_of_victory)
 
     # Bring ELOs closer to mean after season ends
     for team in teams:

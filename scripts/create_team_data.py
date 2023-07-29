@@ -11,8 +11,9 @@ def calculate_expected(elo_a, elo_b):
     return 1 / (1 + 10 ** ((elo_b - elo_a) / 400))
 
 
-def update_elo(winner, loser, elo_ratings):
+def update_elo(winner, loser, elo_ratings, margin_of_victory):
     K = 4  # Elo rating update constant
+    K *= (margin_of_victory ** (1/3))
     # https://www.baseballprospectus.com/news/article/5247/lies-damned-lies-we-are-elo/
 
     # Calculate expected probabilities
@@ -62,6 +63,7 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
     for game in past_season_data:
         winner = game['winning_team']
         loser = game['losing_team']
+        margin_of_victory = abs(game['home_score'] - game['away_score'])
 
         # Initialize Elo ratings for each team if not already present
         if winner not in elo_ratings:
@@ -70,7 +72,7 @@ for x in sorted(glob.glob("data/cleaned_past_season_data/*.json")):
             elo_ratings[loser] = initial_elo
 
         # Update Elo ratings based on the game result
-        update_elo(winner, loser, elo_ratings)
+        update_elo(winner, loser, elo_ratings, margin_of_victory)
 
     # Bring ELOs closer to mean after season ends
     for team in teams:
@@ -87,6 +89,7 @@ start_timestamp = datetime.strptime(current_season_data[0]["official_date"], "%Y
 for game in current_season_data:
     winner = game['winning_team']
     loser = game['losing_team']
+    margin_of_victory = abs(game['home_score'] - game['away_score'])
 
     # Initialize Elo ratings for each team if not already present
     if winner not in elo_ratings:
@@ -95,7 +98,7 @@ for game in current_season_data:
         elo_ratings[loser] = initial_elo
 
     # Update Elo ratings based on the game result
-    update_elo(winner, loser, elo_ratings)
+    update_elo(winner, loser, elo_ratings, margin_of_victory)
 
     date_object = datetime.strptime(game["official_date"], "%Y-%m-%d")
     timestamp = round((date_object.timestamp() - start_timestamp) / (24*60*60))

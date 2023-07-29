@@ -18,6 +18,10 @@
   justify-content: flex-start;
 }
 
+.fullwidth {
+  width: 100%;
+}
+
 .vertical-box {
   display: flex;
   flex-direction: column;
