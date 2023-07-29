@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 
 import './App.css';
 import Header from './Header';
+import Footer from './Footer';
 import TeamDataTable from './TeamDataTable';
 import GameProbabilities from './GameProbabilities';
 import About from './About';
@@ -15,7 +16,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import {FaBaseballBall} from 'react-icons/fa';
 import theme from './theme';
 
-const Layout = ({elem}) => {
+const Layout = ({elem, includeFooter=true}) => {
   return(
     <div>
       <Header />
@@ -37,6 +38,8 @@ const Layout = ({elem}) => {
         </ToggleButtonGroup>
         <div className='medium-space' />
         {elem}
+        <div className='medium-space' />
+        { includeFooter && <Footer /> }
       </div>
     </div>
   );
@@ -60,7 +63,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/about",
-    element: <Layout elem={<About />} />,
+    element: <Layout elem={<About />} includeFooter={false}/>,
     errorElement: <Layout elem={<ErrorPage />} />,
   },
 ]);

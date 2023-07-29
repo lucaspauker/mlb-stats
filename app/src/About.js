@@ -1,13 +1,14 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button, Typography } from '@mui/material';
-import { Link } from "react-router-dom";
+import { Link, ScrollRestoration } from "react-router-dom";
 
 const About = () => {
   const navigate = useNavigate();
 
   return (
     <div>
+      <ScrollRestoration />
       <Button onClick={() => navigate(-1)} variant='outlined'>Go back</Button>
       <div className="medium-space"/>
       <Typography variant="h2">
@@ -15,7 +16,7 @@ const About = () => {
       </Typography>
       <Typography variant="h3">
         What is ELO score?
- Insight     </Typography>
+      </Typography>
       <Typography>
         ELO score is a numerical rating system used to evaluate the relative skill levels of players in competitive games, most notably in chess but also adopted in various other sports and games. Named after its creator, Arpad Elo, this system assigns a numeric rating to each player, with higher scores indicating greater proficiency. The fundamental principle behind the ELO score is that players gain or lose points based on the outcome of their matches and the rating of their opponents. If a player defeats a higher-rated opponent, they will earn more points, whereas losing to a lower-rated opponent will lead to a deduction in points. This process of recalculating ratings after each match aims to provide a dynamic and accurate representation of a player's skill, allowing for fair and competitive matchups.
       </Typography>
