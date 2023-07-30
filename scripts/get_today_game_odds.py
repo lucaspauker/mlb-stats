@@ -67,7 +67,8 @@ for game in games:
         away_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': tmp['winPercentage'], 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': tmp['whip']}
 
     if home_pitcher == "TBD" or away_pitcher == "TBD":
-        prob = elo_probability(team_data[home_team]['elo'], team_data[away_team]['elo'])
+        # https://fivethirtyeight.com/methodology/how-our-mlb-predictions-work/
+        prob = elo_probability(team_data[home_team]['elo'] + 24, team_data[away_team]['elo'])
     else:
         prob = get_probability(team_data[home_team]['elo'], team_data[away_team]['elo'], home_pitcher_stats, away_pitcher_stats)
 
