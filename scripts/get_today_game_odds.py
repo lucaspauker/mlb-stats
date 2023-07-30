@@ -60,7 +60,7 @@ for game in games:
     if 'probablePitcher' in game['teams']['home']:
         home_pitcher = game['teams']['home']['probablePitcher']['fullName']
         tmp = statsapi.player_stat_data(game['teams']['home']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
-        home_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': float(tmp['winPercentage']), 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': float(tmp['whip'])}
+        home_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': tmp['winPercentage'], 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': tmp['whip']}
     if 'probablePitcher' in game['teams']['away']:
         away_pitcher = game['teams']['away']['probablePitcher']['fullName']
         tmp = statsapi.player_stat_data(game['teams']['away']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
