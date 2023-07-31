@@ -5,7 +5,6 @@ import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 
 import './App.css';
 import Header from './Header';
-import Footer from './Footer';
 import TeamDataTable from './TeamDataTable';
 import GameProbabilities from './GameProbabilities';
 import About from './About';
@@ -16,7 +15,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import {FaBaseballBall} from 'react-icons/fa';
 import theme from './theme';
 
-const Layout = ({elem, includeFooter=true}) => {
+const Layout = ({elem}) => {
   return(
     <div>
       <Header />
@@ -39,7 +38,6 @@ const Layout = ({elem, includeFooter=true}) => {
         <div className='medium-space' />
         {elem}
         <div className='medium-space' />
-        { includeFooter && <Footer /> }
       </div>
     </div>
   );

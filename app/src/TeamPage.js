@@ -3,6 +3,7 @@ import { Typography, Button } from '@mui/material';
 import { useNavigate, useParams } from "react-router-dom";
 
 import GraphWithTooltips from './GraphWithTooltips';
+import Footer from './Footer';
 
 const isValueInObjectKeys = (obj, value) => Object.keys(obj).includes(value);
 
@@ -49,6 +50,8 @@ const TeamPage = () => {
           <Typography variant="h1">{team} ELO this season</Typography>
           <div className="small-space" />
           <GraphWithTooltips data={teamData} teamName={team} />
+          <div className="medium-space"/>
+          <Footer/>
         </div>
       }
     </div>

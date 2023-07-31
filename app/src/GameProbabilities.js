@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Paper, CircularProgress } from '@mui/material';
 
 import './GameProbabilities.css';
+import Footer from './Footer';
 
 const GameProbabilities = () => {
   const [teamData, setTeamData] = useState(null);
@@ -47,6 +48,7 @@ const GameProbabilities = () => {
           Loading...
         </div>
         :
+        <>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
           {gameData.map((game, index) => {
             const { home_team, away_team, prob_home, prob_away, game_time,
@@ -137,6 +139,9 @@ const GameProbabilities = () => {
             );
           })}
         </div>
+        <div className="medium-space"/>
+        <Footer/>
+        </>
       }
     </div>
   );
