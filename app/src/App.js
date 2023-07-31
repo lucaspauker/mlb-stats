@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { Typography, Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 import './App.css';
 import Header from './Header';
@@ -15,9 +16,19 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import {FaBaseballBall} from 'react-icons/fa';
 import theme from './theme';
 
-const Layout = ({elem}) => {
+const Layout = ({elem, name="Home Page",
+                 description="Welcome to SportsGenie. This is the home page."}) => {
   return(
     <div>
+      <Helmet>
+        <title>SportsGenie - {name}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={"SportsGenie - " + name} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content="https://sports-genie.com/android-chrome-512x512.png" />
+        <meta property="og:url" content="https://sports-genie.com/" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <div className='main-content'>
         <div className='toggle-container'>
@@ -49,22 +60,26 @@ const Layout = ({elem}) => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout elem={<TeamDataTable />} />,
+    element: <Layout elem={<TeamDataTable />} name="Team Ratings"
+                description="Team ELO and ranking data for all MLB baseball teams." />,
     errorElement: <Layout elem={<ErrorPage />} />,
   },
   {
     path: "/games",
-    element: <Layout elem={<GameProbabilities />} />,
+    element: <Layout elem={<GameProbabilities />} name="Game Predictions"
+                description="Probabilities for all MLB baseball games today." />,
     errorElement: <Layout elem={<ErrorPage />} />,
   },
   {
     path: "/teams/:id",
-    element: <Layout elem={<TeamPage />} />,
+    element: <Layout elem={<TeamPage />} name="Team Page"
+                description="Team-specific data throughout the season for MLB baseball teams." />,
     errorElement: <Layout elem={<ErrorPage />} />,
   },
   {
     path: "/about",
-    element: <Layout elem={<About />} includeFooter={false}/>,
+    element: <Layout elem={<About />} name="About"
+                description="About SportsGenie: how we create our MLB baseball models." />,
     errorElement: <Layout elem={<ErrorPage />} />,
   },
 ]);
