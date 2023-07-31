@@ -20,21 +20,24 @@ const Layout = ({elem}) => {
     <div>
       <Header />
       <div className='main-content'>
-        <ToggleButtonGroup
-          size='large'
-          color='secondary'
-          value={window.location.pathname}
-          exclusive
-        >
-          <ToggleButton value="/" component={Link} to="/" className="toggle-button">
-            <GroupsIcon sx={{marginRight:1}}/>
-            Team ratings
-          </ToggleButton>
-          <ToggleButton value="/games" component={Link} to="/games" className="toggle-button">
-            <ContentPasteIcon sx={{marginRight:1}}/>
-            Game predictions
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <div className='toggle-container'>
+          <ToggleButtonGroup
+            size='large'
+            color='secondary'
+            value={window.location.pathname}
+            exclusive
+            className='toggle-group'
+          >
+            <ToggleButton value="/" component={Link} to="/" className="toggle-button">
+              <GroupsIcon sx={{marginRight:1}}/>
+              Team ratings
+            </ToggleButton>
+            <ToggleButton value="/games" component={Link} to="/games" className="toggle-button">
+              <ContentPasteIcon sx={{marginRight:1}}/>
+              Game predictions
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
         <div className='medium-space' />
         {elem}
         <div className='medium-space' />

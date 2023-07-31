@@ -1,10 +1,22 @@
 .game-box {
-  width: 48%;
-  margin-bottom: 8px;
+  width: calc(50% - 18px);
+  margin-bottom: 16px;
   padding: 4px;
+  margin: 4px;
   text-align: center;
 }
 
 .game-teams-box {
   justify-content: space-between;
 }
+
+@media (max-width:800px)  {
+}
+@media (max-width:600px)  {
+  .game-box {
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 8px;
+  }
+}
+

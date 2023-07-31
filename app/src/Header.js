@@ -18,13 +18,13 @@ const Header = () => {
           </Typography>
         </div>
         <div className='horizontal-box'>
-          <Link to="/about" className='vertical-box'>
+          <Link to="/about" className='vertical-box icon'>
             <InfoIcon sx={{marginRight: 2}} />
           </Link>
-          <a target="_blank" href="https://github.com/lucaspauker/sports-genie" className='vertical-box'>
+          <a target="_blank" href="https://github.com/lucaspauker/sports-genie" className='vertical-box icon'>
             <GitHubIcon sx={{marginRight: 2}} />
           </a>
-          <a target="_blank" href="https://twitter.com/lucas_pauker" className='vertical-box'>
+          <a target="_blank" href="https://twitter.com/lucas_pauker" className='vertical-box icon'>
             <TwitterIcon />
           </a>
         </div>
