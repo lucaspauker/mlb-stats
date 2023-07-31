@@ -12,7 +12,7 @@
 .icon {
   color: white;
 }
-@media (max-width:800px)  {
+@media (max-width:840px)  {
   .header-container {
     flex-direction: column;
     justify-content: space-around;

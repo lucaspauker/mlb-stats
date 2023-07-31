@@ -1,8 +1,7 @@
 .game-box {
   width: calc(50% - 18px);
-  margin-bottom: 16px;
   padding: 4px;
-  margin: 4px;
+  margin-bottom: 16px;
   text-align: center;
 }
 
@@ -10,8 +9,6 @@
   justify-content: space-between;
 }
 
-@media (max-width:800px)  {
-}
 @media (max-width:600px)  {
   .game-box {
     width: 100%;
