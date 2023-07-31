@@ -22,8 +22,9 @@ const Layout = ({elem, name="Home Page",
     <div>
       <Helmet>
         <title>SportsGenie - {name}</title>
+        <title>{name} - SportsGenie</title>
         <meta name="description" content={description} />
-        <meta property="og:title" content={"SportsGenie - " + name} />
+        <meta property="og:title" content={name + " - SportsGenie"} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content="https://sports-genie.com/android-chrome-512x512.png" />
         <meta property="og:url" content="https://sports-genie.com/" />
