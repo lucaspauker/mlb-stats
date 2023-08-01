@@ -2,7 +2,7 @@ import requests
 import json
 import statsapi
 
-from datetime import date
+from datetime import date, timedelta
 
 def get_start_date(year):
     start_date = year + '-03-20'
@@ -32,7 +32,8 @@ def get_start_date(year):
 
 # Get current season data
 today_date = date.today()
-end_date = str(today_date.year) + '-' + str(today_date.month) + '-' + str(today_date.day - 1)
+last_month_end = today_date - timedelta(days=today_date.day)
+end_date = str(last_month_end.year) + '-' + str(last_month_end.month) + '-' + str(last_month_end.day)
 print("Data until", end_date)
 data = statsapi.get("schedule", {"sportId": 1, "startDate": str(today_date.year)+"-03-30", "endDate": end_date, "hydrate": "probablePitcher"})
 

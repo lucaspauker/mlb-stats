@@ -108,7 +108,7 @@ const GameProbabilities = () => {
                     <Typography variant="body1">
                       {away_pitcher}
                     </Typography>
-                    {away_pitcher !== "TBD" && <Typography variant="caption">
+                    {away_pitcher !== "TBD" && away_pitcher_stats['record'] && <Typography variant="caption">
                       ({away_pitcher_stats['record']}), {away_pitcher_stats['era']} ERA
                     </Typography>}
                   </div>
@@ -116,7 +116,7 @@ const GameProbabilities = () => {
                     <Typography variant="body1">
                       {home_pitcher}
                     </Typography>
-                    {home_pitcher !== "TBD" && <Typography variant="caption">
+                    {home_pitcher !== "TBD" && home_pitcher_stats['record'] && <Typography variant="caption">
                       ({home_pitcher_stats['record']}), {home_pitcher_stats['era']} ERA
                     </Typography>}
                   </div>
