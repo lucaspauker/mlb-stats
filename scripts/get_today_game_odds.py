@@ -57,14 +57,20 @@ for game in games:
 
     home_pitcher, away_pitcher = "TBD", "TBD"
     home_pitcher_stats, away_pitcher_stats = {}, {}
-    if 'probablePitcher' in game['teams']['home']:
-        home_pitcher = game['teams']['home']['probablePitcher']['fullName']
-        tmp = statsapi.player_stat_data(game['teams']['home']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
-        home_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': tmp['winPercentage'], 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': tmp['whip']}
-    if 'probablePitcher' in game['teams']['away']:
-        away_pitcher = game['teams']['away']['probablePitcher']['fullName']
-        tmp = statsapi.player_stat_data(game['teams']['away']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
-        away_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': tmp['winPercentage'], 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': tmp['whip']}
+    try:
+        if 'probablePitcher' in game['teams']['home']:
+            home_pitcher = game['teams']['home']['probablePitcher']['fullName']
+            tmp = statsapi.player_stat_data(game['teams']['home']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
+            home_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': tmp['winPercentage'], 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': tmp['whip']}
+    except:
+        pass
+    try:
+        if 'probablePitcher' in game['teams']['away']:
+            away_pitcher = game['teams']['away']['probablePitcher']['fullName']
+            tmp = statsapi.player_stat_data(game['teams']['away']['probablePitcher']['id'], 'pitching', 'season')['stats'][0]['stats']
+            away_pitcher_stats = {'record': str(tmp['wins'])+'-'+str(tmp['losses']), 'era': tmp['era'], 'win_percentage': tmp['winPercentage'], 'wins': tmp['wins'], 'losses': tmp['losses'], 'whip': tmp['whip']}
+    except:
+        pass
 
     if home_pitcher == "TBD" or away_pitcher == "TBD":
         # https://fivethirtyeight.com/methodology/how-our-mlb-predictions-work/
